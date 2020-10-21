@@ -32,10 +32,17 @@ namespace LinkShortenerWeb.Controllers
         [Route("/{slug}")]
         public IActionResult GetLinkFromSlug(string slug)
         {
-            Shortening existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
+            Shortener existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
+            string savedLink = existing.Link;
+
             if (existing != null)
             {
-                return Redirect(existing.Link);
+                if (!savedLink.ToLower().StartsWith("http://"))
+                {
+                    return new RedirectResult($"http://{savedLink}");
+                }
+                else
+                    return new RedirectResult(savedLink);
             }
             else
             {
@@ -43,21 +50,24 @@ namespace LinkShortenerWeb.Controllers
             }
         }
 
-        public IActionResult CreateShortening(string link, string? slug)
+        [HttpPost]
+        [Route("/Home/CreateShortening")]
+        public IActionResult CreateShortening(ShortenerModel model)
         {
-            if (slug == null)
+
+            if (model.Slug == null)
             {
                 return BadRequest("Empty slug");
             }
 
-            _context.Shortening.Add(new Shortening
+            _context.Shortening.Add(new Shortener
             {
-                Link = link,
-                Slug = slug
+                Link = model.Link,
+                Slug = model.Slug
             });
             _context.SaveChanges();
 
-            return Ok($"Created {slug} for link: {link}");
+            return Ok($"Created https://basictestapp-01.herokuapp.com/{model.Slug}");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

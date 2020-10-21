@@ -1,16 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using LinkShortenerWeb.Models
+@model LinkShortenerWeb.Models.ShortenerModel
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <div>
-        @using (Html.BeginForm("CreateShortening", "Home", FormMethod.Post)) ;
-            <label for="link">Link:</label>
-            <input type="text" name="link" value="" />
-            <label for="slug">Slug:</label>
-            <input type="text" name="slug" value="" />
-            <button type="submit">Shorten it!</button>
+    @using (Html.BeginForm("CreateShortening", "Home", FormMethod.Post))
+    {
+    <div >
+        @Html.LabelFor(m => m.Link)
+        @Html.TextBoxFor(m => m.Link)
+        @Html.LabelFor(m => m.Slug)
+        @Html.TextBoxFor(m => m.Slug)
+        <input type="submit" value="Submit" />
     </div>
+    }
+
 </div>
 

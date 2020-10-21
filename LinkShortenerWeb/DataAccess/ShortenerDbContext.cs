@@ -13,6 +13,6 @@ namespace LinkShortenerWeb.DataAccess
         {
         }
 
-        public DbSet<Shortening> Shortening { get; set; }
+        public DbSet<Shortener> Shortening { get; set; }
     }
 }

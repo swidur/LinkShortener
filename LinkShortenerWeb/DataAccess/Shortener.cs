@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LinkShortenerWeb.DataAccess
 {
-    public class Shortening
+    public class Shortener
     {
         [Required]
         public int Id { get; set; }

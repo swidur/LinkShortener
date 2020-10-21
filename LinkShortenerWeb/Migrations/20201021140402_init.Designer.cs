@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LinkShortenerWeb.Migrations
 {
     [DbContext(typeof(ShortenerDbContext))]
-    [Migration("20201021095037_init")]
+    [Migration("20201021140402_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace LinkShortenerWeb.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("LinkShortenerWeb.DataAccess.Shortening", b =>
+            modelBuilder.Entity("LinkShortenerWeb.DataAccess.Shortener", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -18,7 +18,7 @@ namespace LinkShortenerWeb.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("LinkShortenerWeb.DataAccess.Shortening", b =>
+            modelBuilder.Entity("LinkShortenerWeb.DataAccess.Shortener", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

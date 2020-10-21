@@ -4,5 +4,13 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div>
+        @using (Html.BeginForm("CreateShortening", "Home", FormMethod.Post)) ;
+            <label for="link">Link:</label>
+            <input type="text" name="link" value="" />
+            <label for="slug">Slug:</label>
+            <input type="text" name="slug" value="" />
+            <button type="submit">Shorten it!</button>
+    </div>
 </div>
+

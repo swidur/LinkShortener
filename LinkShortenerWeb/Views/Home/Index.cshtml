@@ -18,5 +18,19 @@
     </div>
     }
 
+<div>
+    @if (Model != null & ViewBag.Response == null && Model.Slug != null)
+    {
+        <p><a href="https://basictestapp-01.herokuapp.com/@Html.DisplayFor(m => m.Slug)">https://basictestapp-01.herokuapp.com/@Html.DisplayFor(m => m.Slug)</a></p>
+    }
 </div>
 
+<div>
+    @if(ViewBag.Response != null && ViewBag.Response is ObjectResult)
+    {
+       <p>@ViewBag.Response.Value</p>
+    }
+</div>
+</div>
+
+ 

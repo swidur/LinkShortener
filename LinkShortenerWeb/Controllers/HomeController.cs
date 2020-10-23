@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LinkShortenerWeb.DataAccess;
+using LinkShortenerWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using LinkShortenerWeb.Models;
-using LinkShortenerWeb.DataAccess;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace LinkShortenerWeb.Controllers
 {
@@ -29,14 +27,16 @@ namespace LinkShortenerWeb.Controllers
             return View();
         }
 
+        [HttpGet]
         [Route("/{slug}")]
         public IActionResult GetLinkFromSlug(string slug)
         {
             Shortener existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
-            string savedLink = existing.Link;
 
             if (existing != null)
             {
+                string savedLink = existing.Link;
+
                 if (!savedLink.ToLower().StartsWith("http://"))
                 {
                     return new RedirectResult($"http://{savedLink}");
@@ -46,28 +46,50 @@ namespace LinkShortenerWeb.Controllers
             }
             else
             {
-                return BadRequest("No such slug");
+                slug = null;
+                ViewBag.Response = BadRequest("No such slug");
+                return View("Index");
             }
         }
 
+
         [HttpPost]
-        [Route("/Home/CreateShortening")]
+        [Route("/Home/Shorten")]
         public IActionResult CreateShortening(ShortenerModel model)
         {
 
-            if (model.Slug == null)
+            if (String.IsNullOrEmpty(model.Link))
             {
-                return BadRequest("Empty slug");
+                ViewBag.Response = BadRequest("Empty link");
+                return View("Index", model);
             }
 
-            _context.Shortening.Add(new Shortener
+            if (String.IsNullOrEmpty(model.Slug))
+            {
+                ViewBag.Response = BadRequest("Empty slug");
+                return View("Index", model);
+            }
+          
+
+            var newShortener = new Shortener
             {
                 Link = model.Link,
                 Slug = model.Slug
-            });
-            _context.SaveChanges();
+            };
 
-            return Ok($"Created https://basictestapp-01.herokuapp.com/{model.Slug}");
+            _context.Shortening.Add(newShortener);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ViewBag.Response = BadRequest("Already exists");
+                return View("Index", model);
+            }
+
+            return View("Index", model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

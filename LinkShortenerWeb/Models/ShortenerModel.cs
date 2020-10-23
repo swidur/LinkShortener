@@ -8,8 +8,10 @@ namespace LinkShortenerWeb.Models
 {
     public class ShortenerModel
     {
+        [Required]
         [Display(Name = "Link: ")]
         public string Link { get; set; }
+        [Required]
         [Display(Name = "Slug: ")]
         public string Slug { get; set; }
     }

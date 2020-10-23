@@ -12,7 +12,13 @@ namespace LinkShortenerWeb.DataAccess
             base(options)
         {
         }
-
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Shortener>()
+                .HasIndex(u => u.Slug)
+                .IsUnique();
+        }
         public DbSet<Shortener> Shortening { get; set; }
     }
 }

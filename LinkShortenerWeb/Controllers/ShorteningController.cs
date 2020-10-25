@@ -4,35 +4,40 @@ using System.Linq;
 using System.Threading.Tasks;
 using LinkShortenerDataAccess;
 using LinkShortenerDataAccess.Models;
+using LinkShortenerDataAccess.Repository;
 using LinkShortenerWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace LinkShortenerWeb.Controllers
 {
     public class ShorteningController : Controller
     {
         private readonly ShortenerDbContext _context;
+        private readonly IShorteningRepo _repo;
 
-        public ShorteningController(ShortenerDbContext context)
+        public ShorteningController(IShorteningRepo repo)
         {
-            this._context = context;
+            this._repo = repo;
         }
         public IActionResult Index()
         {
-            return View("Home/Index");
+            return View("../Home/Index");
         }
 
         [HttpGet]
         [Route("/{slug}")]
         public IActionResult GetLinkFromSlug(string slug)
         {
-            Shortening existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
+            Shortening existing = _repo.GetShorteningBySlug(slug);
 
             if (existing != null)
             {
                 string savedLink = existing.Link;
 
-                if (!savedLink.ToLower().StartsWith("http://"))
+                if (!savedLink.ToLower().StartsWith("http://") &
+                    !savedLink.ToLower().StartsWith("https://"))
                 {
                     return new RedirectResult($"http://{savedLink}");
                 }
@@ -41,7 +46,6 @@ namespace LinkShortenerWeb.Controllers
             }
             else
             {
-                slug = null;
                 ViewBag.Response = BadRequest("No such slug");
                 return View("../Home/Index");
             }
@@ -51,35 +55,23 @@ namespace LinkShortenerWeb.Controllers
         [Route("/Home/Shorten")]
         public IActionResult CreateShortening(ShortenerModel model)
         {
-
-            if (String.IsNullOrEmpty(model.Link))
-            {
-                ViewBag.Response = BadRequest("Empty link");
-                return View("../Home/Index", model);
-            }
-
-            if (String.IsNullOrEmpty(model.Slug))
-            {
-                ViewBag.Response = BadRequest("Empty slug");
-                return View("../Home/Index", model);
-            }
-
-
-            var newShortener = new Shortening
+            var newShortening = new Shortening
             {
                 Link = model.Link,
                 Slug = model.Slug
             };
 
-            _context.Shortening.Add(newShortener);
             try
             {
-                _context.SaveChanges();
+                _repo.CreateShortening(newShortening);
             }
-            catch (Exception ex)
+            catch (ArgumentException ae)
             {
-                ViewBag.Response = BadRequest($"Already exists {ex.InnerException.Message}");
-                return View("../Home/Index", model);
+                ViewBag.Response = BadRequest(ae.Message);
+            }
+            catch (DbUpdateException)
+            {
+                ViewBag.Response = Conflict("Slug already exists");
             }
 
             return View("../Home/Index", model);

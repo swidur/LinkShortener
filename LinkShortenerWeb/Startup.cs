@@ -29,6 +29,7 @@ namespace LinkShortenerWeb
                     b => b.MigrationsAssembly("LinkShortenerDataAccess")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ShortenerDbContext>();
+            services.AddScoped<IShorteningRepo, ShorteningEFRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

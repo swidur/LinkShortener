@@ -19,5 +19,6 @@ namespace LinkShortenerDataAccess
                 .IsUnique();
         }
         public DbSet<Shortening> Shortening { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

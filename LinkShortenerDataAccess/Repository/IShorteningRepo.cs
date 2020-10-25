@@ -9,6 +9,7 @@ namespace LinkShortenerDataAccess.Repository
     {
         public IEnumerable<Shortening> GetAllShorteningsByAny(string where, string userId);
         public Shortening GetShorteningById(int id);
+        public Shortening GetShorteningBySlug(string slug);
         public void CreateShortening(Shortening shortening);
         public void UpdateShortening(Shortening shortening);
         public void DeleteShortening(Shortening shortening);

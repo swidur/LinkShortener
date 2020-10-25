@@ -27,13 +27,10 @@ namespace LinkShortenerDataAccess.Repository
             _context.SaveChanges();
         }
 
-        public void DeleteShortening(Shortening shortening)
+        public void DeleteShortening(Shortening shortening) 
         {
-            if (String.IsNullOrEmpty(shortening.Slug) ||
-                String.IsNullOrEmpty(shortening.Link))
-            {
-                throw new ArgumentException(nameof(shortening));
-            }
+            if (String.IsNullOrEmpty(shortening.Slug)) throw new ArgumentException($"Value cannot be empty: {nameof(shortening.Slug)}");
+            if (String.IsNullOrEmpty(shortening.Link)) throw new ArgumentException($"Value cannot be empty: {nameof(shortening.Link)}");
 
             //Possible tracking issue, must be tested.
             shortening.IsDeleted = true;
@@ -55,6 +52,11 @@ namespace LinkShortenerDataAccess.Repository
         public Shortening GetShorteningById(int id)
         {
             return _context.Shortening.Find(id);
+        }
+
+        public Shortening GetShorteningBySlug(string slug)
+        {
+            return _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
         }
 
         public bool SaveChanges(ShortenerDbContext context)

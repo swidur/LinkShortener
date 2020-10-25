@@ -1,9 +1,10 @@
 ﻿using LinkShortenerDataAccess.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkShortenerDataAccess
 {
-    public class ShortenerDbContext : DbContext
+    public class ShortenerDbContext : IdentityDbContext
     {
         public ShortenerDbContext(DbContextOptions<ShortenerDbContext> options) :
             base(options)
@@ -12,6 +13,7 @@ namespace LinkShortenerDataAccess
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             builder.Entity<Shortening>()
                 .HasIndex(u => u.Slug)
                 .IsUnique();

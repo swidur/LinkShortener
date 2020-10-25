@@ -1,4 +1,5 @@
 using LinkShortenerDataAccess;
+using LinkShortenerDataAccess.Repository;
 using LinkShortenerWeb.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,6 @@ namespace LinkShortenerWeb
                     b => b.MigrationsAssembly("LinkShortenerDataAccess")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ShortenerDbContext>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

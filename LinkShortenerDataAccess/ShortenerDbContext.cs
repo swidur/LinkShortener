@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LinkShortenerDataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace LinkShortenerWeb.DataAccess
+namespace LinkShortenerDataAccess
 {
     public class ShortenerDbContext : DbContext
     {
@@ -15,10 +12,10 @@ namespace LinkShortenerWeb.DataAccess
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Shortener>()
+            builder.Entity<Shortening>()
                 .HasIndex(u => u.Slug)
                 .IsUnique();
         }
-        public DbSet<Shortener> Shortening { get; set; }
+        public DbSet<Shortening> Shortening { get; set; }
     }
 }

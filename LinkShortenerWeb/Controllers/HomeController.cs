@@ -1,4 +1,5 @@
-﻿using LinkShortenerWeb.DataAccess;
+﻿using LinkShortenerDataAccess;
+using LinkShortenerDataAccess.Models;
 using LinkShortenerWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace LinkShortenerWeb.Controllers
         [Route("/{slug}")]
         public IActionResult GetLinkFromSlug(string slug)
         {
-            Shortener existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
+            Shortening existing = _context.Shortening.Where(s => s.Slug.Equals(slug)).FirstOrDefault();
 
             if (existing != null)
             {
@@ -71,7 +72,7 @@ namespace LinkShortenerWeb.Controllers
             }
           
 
-            var newShortener = new Shortener
+            var newShortener = new Shortening
             {
                 Link = model.Link,
                 Slug = model.Slug

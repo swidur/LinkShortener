@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LinkShortenerWeb.Migrations
+namespace LinkShortenerDataAccess.Migrations
 {
     public partial class AddUniqueToSlug : Migration
     {

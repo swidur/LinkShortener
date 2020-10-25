@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace LinkShortenerWeb.Migrations
+namespace LinkShortenerDataAccess.Migrations
 {
     public partial class init : Migration
     {
